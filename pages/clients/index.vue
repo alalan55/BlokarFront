@@ -1,7 +1,7 @@
 <template>
   <div class="h-full max-h-full p-8 overflow-auto bg-[#fff] rounded">
     <section>
-      <h1 class="text-4xl font-black">Obras</h1>
+      <h1 class="text-4xl font-black">Clientes</h1>
       <span class="text-sm text-gray-500">Lista de clientes cadastrados</span>
     </section>
 
