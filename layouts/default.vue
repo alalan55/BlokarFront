@@ -1,10 +1,10 @@
 <template>
   <div class="h-dvh">
     <div class="wrapper h-full flex">
-      <div class="bg-[#071f46] h-full w-[280px]">
-        <LayoutAppBar/>
+      <div class="bg-[#182643] h-full w-[280px]">
+        <LayoutAppDrawer />
       </div>
-      <div class="flex-1 bg-[#f1f2f4] h-full">
+      <div class="flex-1 bg-[#182643] h-full p-[.5rem_.5rem_.5rem_0]">
         <slot />
       </div>
     </div>

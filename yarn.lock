@@ -4507,6 +4507,11 @@ magicast@^0.3.5:
     "@babel/types" "^7.25.4"
     source-map-js "^1.2.0"
 
+maska@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/maska/-/maska-3.2.0.tgz#0287c8e9cb137d3e08bc65a28547ebc225fbab11"
+  integrity sha512-zSmSgs5/q9vMSmrdZT3rKOv9uLznNWR/niuuAdBZDTvB3SMKOX9vhMtDijFyExz+B4UClu2rvksylUh/ea1bLA==
+
 math-intrinsics@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/math-intrinsics/-/math-intrinsics-1.1.0.tgz#a0dd74be81e2aa5c2f27e65ce283605ee4e2b7f9"
@@ -4923,7 +4928,7 @@ nth-check@^2.0.1:
   dependencies:
     boolbase "^1.0.0"
 
-nuxt@^3.18.1:
+nuxt@^3.17.5:
   version "3.18.1"
   resolved "https://registry.yarnpkg.com/nuxt/-/nuxt-3.18.1.tgz#9700f6a290d263969ffc54ff93ffdc2a5cd545de"
   integrity sha512-y2pLKty6R8MCCFlAUsJNJcOuT6M3EovzEpi7/U3WXQsnzf2MzP+5I67ScfmwSqZ3UUMgXvfc9H4+KC4Ifnq5wg==
@@ -6979,7 +6984,7 @@ vue-router@^4.5.1:
   dependencies:
     "@vue/devtools-api" "^6.6.4"
 
-vue@^3.5.18:
+vue@^3.5.16, vue@^3.5.18:
   version "3.5.18"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.5.18.tgz#3d622425ad1391a2b0138323211ec784f4415686"
   integrity sha512-7W4Y4ZbMiQ3SEo+m9lnoNpV9xG7QVMLa+/0RFwwiAVkeYoyGXqWE85jabU4pllJNUzqfLShJ5YLptewhCWUgNA==

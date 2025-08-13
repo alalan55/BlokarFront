@@ -1,7 +1,7 @@
 <template>
-  <div class="p-6 h-full  flex flex-col">
+  <div class="py-6 px-3 h-full  flex flex-col">
     <div class="logo text-white text-center">
-      <strong class="text-3xl font-black"> BlokarApp.</strong>
+      <strong class="text-3xl font-black title"> BlokarApp.</strong>
     </div>
 
     <section class="mt-20 flex-1 flex flex-col justify-between">
@@ -46,9 +46,12 @@ const links = [
 </script>
 
 <style scoped lang="postcss">
+.title{
+  font-family: 'Archivo Black', sans-serif; 
+}
 .router-link-exact-active {
   font-weight: bold;
-  background: #306edb;
+  background: #13346c;
   color: #fff !important;
 }
 
