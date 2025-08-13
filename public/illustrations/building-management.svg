@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600" height="400" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fundo -->
+  <rect width="600" height="400" fill="none"/>
+  
+  <!-- Solo/Base -->
+  <rect x="50" y="350" width="500" height="20" rx="4" fill="#E2E8F0"/>
+  
+  <!-- Edifício 1 - Prédio principal -->
+  <rect x="100" y="150" width="140" height="200" fill="#3B82F6" stroke="#2563EB" stroke-width="2"/>
+  <rect x="110" y="160" width="30" height="40" fill="#BFDBFE"/>
+  <rect x="150" y="160" width="30" height="40" fill="#BFDBFE"/>
+  <rect x="190" y="160" width="30" height="40" fill="#BFDBFE"/>
+  <rect x="110" y="210" width="30" height="40" fill="#BFDBFE"/>
+  <rect x="150" y="210" width="30" height="40" fill="#BFDBFE"/>
+  <rect x="190" y="210" width="30" height="40" fill="#BFDBFE"/>
+  <rect x="110" y="260" width="30" height="40" fill="#BFDBFE"/>
+  <rect x="150" y="260" width="30" height="40" fill="#BFDBFE"/>
+  <rect x="190" y="260" width="30" height="40" fill="#BFDBFE"/>
+  <rect x="130" y="320" width="80" height="30" fill="#2563EB"/>
+  
+  <!-- Edifício 2 - Torre -->
+  <rect x="300" y="100" width="100" height="250" fill="#818CF8" stroke="#6366F1" stroke-width="2"/>
+  <rect x="310" y="120" width="25" height="30" fill="#C7D2FE"/>
+  <rect x="345" y="120" width="25" height="30" fill="#C7D2FE"/>
+  <rect x="310" y="160" width="25" height="30" fill="#C7D2FE"/>
+  <rect x="345" y="160" width="25" height="30" fill="#C7D2FE"/>
+  <rect x="310" y="200" width="25" height="30" fill="#C7D2FE"/>
+  <rect x="345" y="200" width="25" height="30" fill="#C7D2FE"/>
+  <rect x="310" y="240" width="25" height="30" fill="#C7D2FE"/>
+  <rect x="345" y="240" width="25" height="30" fill="#C7D2FE"/>
+  <rect x="310" y="280" width="25" height="30" fill="#C7D2FE"/>
+  <rect x="345" y="280" width="25" height="30" fill="#C7D2FE"/>
+  <rect x="330" y="60" width="40" height="40" fill="#6366F1" stroke="#4F46E5" stroke-width="2"/>
+  
+  <!-- Edifício 3 - Casa moderna -->
+  <rect x="450" y="250" width="100" height="100" fill="#60A5FA" stroke="#3B82F6" stroke-width="2"/>
+  <polygon points="450,250 500,200 550,250" fill="#93C5FD" stroke="#3B82F6" stroke-width="2"/>
+  <rect x="470" y="300" width="30" height="50" fill="#DBEAFE"/>
+  <rect x="510" y="280" width="25" height="25" fill="#DBEAFE"/>
+  
+  <!-- Grua de Construção -->
+  <line x1="400" y1="350" x2="400" y2="80" stroke="#475569" stroke-width="8"/>
+  <line x1="400" y1="80" x2="490" y2="80" stroke="#475569" stroke-width="6"/>
+  <line x1="400" y1="100" x2="470" y2="100" stroke="#475569" stroke-width="4"/>
+  <line x1="400" y1="120" x2="450" y2="120" stroke="#475569" stroke-width="4"/>
+  <line x1="490" y1="80" x2="470" y2="50" stroke="#475569" stroke-width="4"/>
+  <circle cx="470" cy="50" r="6" fill="#EF4444"/>
+  
+  <!-- Planta/Documento -->
+  <rect x="220" y="80" width="60" height="40" fill="#F9FAFB" stroke="#475569" stroke-width="1"/>
+  <line x1="230" y1="90" x2="270" y2="90" stroke="#475569" stroke-width="1"/>
+  <line x1="230" y1="100" x2="260" y2="100" stroke="#475569" stroke-width="1"/>
+  <line x1="230" y1="110" x2="270" y2="110" stroke="#475569" stroke-width="1"/>
+  
+  <!-- Sol -->
+  <circle cx="80" cy="80" r="30" fill="#FBBF24"/>
+  <line x1="80" y1="30" x2="80" y2="40" stroke="#FBBF24" stroke-width="4"/>
+  <line x1="80" y1="120" x2="80" y2="130" stroke="#FBBF24" stroke-width="4"/>
+  <line x1="30" y1="80" x2="40" y2="80" stroke="#FBBF24" stroke-width="4"/>
+  <line x1="120" y1="80" x2="130" y2="80" stroke="#FBBF24" stroke-width="4"/>
+  <line x1="45" y1="45" x2="55" y2="55" stroke="#FBBF24" stroke-width="4"/>
+  <line x1="105" y1="105" x2="115" y2="115" stroke="#FBBF24" stroke-width="4"/>
+  <line x1="45" y1="115" x2="55" y2="105" stroke="#FBBF24" stroke-width="4"/>
+  <line x1="105" y1="55" x2="115" y2="45" stroke="#FBBF24" stroke-width="4"/>
+  
+  <!-- Nuvens -->
+  <circle cx="520" cy="60" r="15" fill="white" opacity="0.8"/>
+  <circle cx="540" cy="60" r="20" fill="white" opacity="0.8"/>
+  <circle cx="560" cy="60" r="15" fill="white" opacity="0.8"/>
+  
+  <circle cx="420" cy="40" r="10" fill="white" opacity="0.8"/>
+  <circle cx="440" cy="40" r="15" fill="white" opacity="0.8"/>
+  <circle cx="460" cy="40" r="10" fill="white" opacity="0.8"/>
+</svg>
