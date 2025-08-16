@@ -88,7 +88,7 @@
         </div>
       </div>
 
-      <div v-if="viewMode === 'table' && items.length > 0">
+      <div v-if="viewMode === 'table' && works.length > 0">
         <SharedTTable
           :columns="columnsTable"
           :rows="works"
@@ -99,7 +99,9 @@
           <template #cell-status="{ row }">
             <span
               :class="[
-                `${workStatus[row.status].color} px-2 py-1 rounded-md text-xs`,
+                `${
+                  workStatus[row.status].color
+                } px-2 py-1 rounded-md text-xs inline-block`,
               ]"
             >
               {{ workStatus[row.status].label }}
@@ -130,7 +132,7 @@
                 name="tabler:trash"
                 size="1.2rem"
                 class="text-red-600 hover:text-red-800 cursor-pointer"
-                @click="deleteWork(row)"
+                @click="setWorkToDelete(row)"
               />
             </div>
           </template>
@@ -263,15 +265,49 @@
         </div>
       </div>
     </SharedTModal>
+
+    <SharedTModal
+      v-model="deleteWorkModal"
+      title="Remover obra"
+      width="max-w-3xl"
+      @close="
+        deleteWorkModal.value = false;
+        workToDelete.value = null;
+      "
+    >
+      <div class="space-y-4 mt-4">
+        <p>Tem certeza que deseja remover a obra "{{ workToDelete?.name }}"?</p>
+        <p class="text-sm text-gray-500">Esta ação não pode ser desfeita.</p>
+
+        <div class="flex items-center justify-end gap-2">
+          <SharedTButton
+            title="Cancelar"
+            variant="outlined"
+            size="small"
+            @click="closeDeleteWorkModal"
+          />
+          <SharedTButton
+            title="Remover"
+            size="small"
+            :loading="deleteWorkLoading"
+            @click="deleteWork"
+          />
+        </div>
+      </div>
+    </SharedTModal>
   </div>
 </template>
 
 <script setup>
 const http = useApi();
 const router = useRouter();
+const toast = useToast();
 
 const works = ref([]);
 const loadingGetWorks = ref(false);
+const deleteWorkModal = ref(false);
+const workToDelete = ref(null);
+const deleteWorkLoading = ref(false);
 
 const workStatus = {
   0: {
@@ -356,21 +392,6 @@ const columnsTable = [
     label: "Ações",
     thClass: "w-20",
     tdClass: "text-center",
-    formatter: () => {
-      return `
-        <div class="flex justify-center gap-1">
-          <button class="p-1 text-blue-600 hover:text-blue-800">
-            <Icon name="tabler:eye" size="1.2rem" />
-          </button>
-          <button class="p-1 text-green-600 hover:text-green-800">
-            <Icon name="tabler:edit" size="1.2rem" />
-          </button>
-          <button class="p-1 text-red-600 hover:text-red-800">
-            <Icon name="tabler:trash" size="1.2rem" />
-          </button>
-        </div>
-      `;
-    },
   },
 ];
 
@@ -508,9 +529,42 @@ async function getWorks() {
   }
 }
 
+async function deleteWork() {
+  if (!workToDelete.value) return;
+
+  deleteWorkLoading.value = true;
+  try {
+    const { error } = await http.delete(`work/${workToDelete.value.id}`);
+
+    if (error.value) {
+      console.error("Erro ao remover obra:", error.value);
+      return;
+    }
+
+    toast.success({
+      title: "Obra removida com sucesso!",
+    });
+
+    deleteWorkLoading.value = false;
+    works.value = works.value.filter(
+      (item) => item.id !== workToDelete.value.id
+    );
+    deleteWorkModal.value = false;
+    workToDelete.value = null;
+  } catch (error) {
+    console.error("Erro ao remover obra:", error);
+    deleteWorkLoading.value = false;
+  }
+}
+
 function formatDate(dateString) {
   const options = { year: "numeric", month: "long", day: "numeric" };
   return new Date(dateString).toLocaleDateString("pt-BR", options);
+}
+
+function setWorkToDelete(info) {
+  workToDelete.value = info;
+  deleteWorkModal.value = info;
 }
 
 getWorks();

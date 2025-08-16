@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     },
   },
   modules: [
+    "nuxt-toast",
     "@nuxt/icon",
     "@formkit/auto-animate/nuxt",
     "@nuxt/fonts",

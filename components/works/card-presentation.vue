@@ -64,6 +64,7 @@
     <div class="px-4 py-3 bg-gray-50 flex justify-between">
       <button
         class="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-1"
+        @click="router.push('/works/' + item.id)"
       >
         <Icon name="tabler:eye" size="1rem" />
         <span>Ver detalhes</span>
@@ -88,6 +89,8 @@ const props = defineProps({
   },
 });
 
+const router = useRouter();
+
 const workStatus = {
   0: {
     label: "A Iniciar",
@@ -111,17 +114,6 @@ function formatDate(dateString) {
   const options = { year: "numeric", month: "long", day: "numeric" };
   return new Date(dateString).toLocaleDateString("pt-BR", options);
 }
-
-// Função auxiliar para classes de status
-const getStatusClass = (status) => {
-  const classes = {
-    "Em andamento": "bg-yellow-100 text-yellow-800",
-    Concluído: "bg-green-100 text-green-800",
-    Planejamento: "bg-blue-100 text-blue-800",
-    Cancelado: "bg-red-100 text-red-800",
-  };
-  return classes[status] || "";
-};
 
 // Função auxiliar para classes de progresso
 const getProgressClass = (progress) => {
