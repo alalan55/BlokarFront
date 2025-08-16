@@ -3,6 +3,7 @@
     class="w-auto rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 cursor-pointer"
     :class="[props.class, props.variant, sizeClass]"
     :disabled="props.disabled || props.loading"
+    @click="emit('click')"
   >
     <slot>
       <span class="font-semibold">{{ props.title }}</span>
@@ -17,6 +18,8 @@
 </template>
 
 <script setup>
+const emit = defineEmits(["click"]);
+
 const props = defineProps({
   variant: {
     type: String,

@@ -22,7 +22,7 @@
         <Icon name="tabler:user" class="text-gray-500 mt-0.5 mr-2" />
         <div>
           <div class="text-xs text-gray-500">Cliente</div>
-          <div class="text-sm">{{ item?.client || "N/A" }}</div>
+          <div class="text-sm">{{ item?.client?.name || "N/A" }}</div>
         </div>
       </div>
 

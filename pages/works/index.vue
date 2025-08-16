@@ -96,6 +96,10 @@
           class="shadow-sm border border-gray-100 rounded-lg overflow-hidden"
           hover-effect
         >
+          <template #cell-client="{ row }">
+            <span class="text-gray-500">{{ row?.client?.name || "N/A" }}</span>
+          </template>
+
           <template #cell-status="{ row }">
             <span
               :class="[
@@ -193,8 +197,8 @@
               >Cliente</label
             >
             <SharedTSelect
-              v-model="newWork.client"
-              :options="clientOptions"
+              v-model="newWork.clientId"
+              :options="clients"
               placeholder="Selecione um cliente"
             />
           </div>
@@ -226,6 +230,7 @@
             >
             <SharedTInput
               v-model="newWork.startDate"
+              type="date"
               placeholder="DD/MM/AAAA"
             />
           </div>
@@ -234,7 +239,11 @@
             <label class="block text-sm font-medium text-gray-700 mb-1"
               >Prazo final</label
             >
-            <SharedTInput v-model="newWork.deadline" placeholder="DD/MM/AAAA" />
+            <SharedTInput
+              v-model="newWork.deadline"
+              type="date"
+              placeholder="DD/MM/AAAA"
+            />
           </div>
         </div>
 
@@ -254,12 +263,15 @@
           <SharedTButton
             variant="outlined"
             title="Cancelar"
+            size="small"
             class="w-auto bg-gray-200 hover:bg-gray-300 text-gray-800"
             @click="closeNewWorkModal"
           />
           <SharedTButton
             title="Criar Obra"
+            size="small"
             class="w-auto bg-teal-600 hover:bg-teal-700"
+            :loading="loadingAddNewWork"
             @click="saveNewWork"
           />
         </div>
@@ -304,10 +316,13 @@ const router = useRouter();
 const toast = useToast();
 
 const works = ref([]);
+const clients = ref([]);
+
 const loadingGetWorks = ref(false);
 const deleteWorkModal = ref(false);
 const workToDelete = ref(null);
 const deleteWorkLoading = ref(false);
+const loadingAddNewWork = ref(false);
 
 const workStatus = {
   0: {
@@ -438,10 +453,10 @@ const items = ref([
 // Opções para filtros
 const statusOptions = [
   { value: "", label: "Todos os status" },
-  { value: "Em andamento", label: "Em andamento" },
-  { value: "Concluído", label: "Concluído" },
-  { value: "Planejamento", label: "Planejamento" },
-  { value: "Cancelado", label: "Cancelado" },
+  { value: 0, label: "A iniciar" },
+  { value: 1, label: "Em progresso" },
+  { value: 2, label: "Pausado" },
+  { value: 3, label: "Completo" },
 ];
 
 const clientOptions = [
@@ -499,15 +514,41 @@ const closeNewWorkModal = () => {
   };
 };
 
-const saveNewWork = () => {
-  // Simular salvar uma nova obra
-  const id = items.value.length + 1;
-  items.value.push({
-    id,
-    ...newWork.value,
-  });
-  closeNewWorkModal();
-};
+async function saveNewWork() {
+  try {
+    loadingAddNewWork.value = true;
+    const { data, error } = await http.post("work/create", {
+      ...newWork.value,
+      userId: "",
+    });
+
+    if (error.value) {
+      console.error("Erro ao criar obra:", error.value);
+      toast.error({
+        title: "Erro ao criar obra. Tente novamente.",
+      });
+      loadingAddNewWork.value = false;
+      return;
+    }
+
+    console.log(data.value, "New work");
+
+    toast.success({
+      title: "Obra criada com sucesso!",
+    });
+
+    works.value.push(data.value.content);
+
+    closeNewWorkModal();
+    loadingAddNewWork.value = false;
+  } catch (error) {
+    console.error("Erro ao salvar nova obra:", error);
+    toast.error({
+      title: "Erro ao criar obra. Tente novamente.",
+    });
+    loadingAddNewWork.value = false;
+  }
+}
 
 async function getWorks() {
   try {
@@ -567,7 +608,27 @@ function setWorkToDelete(info) {
   deleteWorkModal.value = info;
 }
 
+async function getClients() {
+  try {
+    const { data, error } = await http.get("client/list");
+
+    if (error.value) {
+      console.error("Erro ao buscar clientes:", error.value);
+      return;
+    }
+
+    clients.value = data.value.content.map((client) => ({
+      value: client.id,
+      label: client.name,
+      ...client,
+    }));
+  } catch (error) {
+    console.error("Erro ao buscar clientes:", error);
+  }
+}
+
 getWorks();
+getClients();
 </script>
 
 <style scoped lang="postcss">
