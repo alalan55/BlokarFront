@@ -650,7 +650,7 @@
 
   <!-- Modal de sessões ativas -->
   <SharedTModal 
-    v-if="showSessionsModal" 
+    v-model="showSessionsModal" 
     title="Gerenciar sessões ativas" 
     @close="showSessionsModal = false"
   >
