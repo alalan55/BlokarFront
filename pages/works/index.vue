@@ -66,6 +66,7 @@
     <!-- Visualização das obras -->
     <section>
       <div class="flex justify-end mb-4">
+        <!-- Tipo de visualização: -->
         <div class="bg-gray-100 rounded-lg p-1 inline-flex">
           <button
             class="px-3 py-1 rounded-md flex items-center gap-1"
@@ -90,97 +91,57 @@
       <div v-if="viewMode === 'table' && items.length > 0">
         <SharedTTable
           :columns="columnsTable"
-          :rows="items"
+          :rows="works"
+          :loading="loadingGetWorks"
           class="shadow-sm border border-gray-100 rounded-lg overflow-hidden"
           hover-effect
-        ></SharedTTable>
+        >
+          <template #cell-status="{ row }">
+            <span
+              :class="[
+                `${workStatus[row.status].color} px-2 py-1 rounded-md text-xs`,
+              ]"
+            >
+              {{ workStatus[row.status].label }}
+            </span>
+          </template>
+
+          <template #cell-endDate="{ row }">
+            <span class="text-gray-500">{{ formatDate(row.endDate) }}</span>
+          </template>
+
+          <template #cell-actions="{ row }">
+            <div class="flex items-center gap-3">
+              <Icon
+                name="tabler:eye"
+                size="1.2rem"
+                class="text-blue-600 hover:text-blue-800 cursor-pointer"
+                @click="router.push('/works/' + row.id)"
+              />
+
+              <Icon
+                name="tabler:edit"
+                size="1.2rem"
+                class="text-blue-600 hover:text-blue-800 cursor-pointer"
+                @click="editWork(row)"
+              />
+
+              <Icon
+                name="tabler:trash"
+                size="1.2rem"
+                class="text-red-600 hover:text-red-800 cursor-pointer"
+                @click="deleteWork(row)"
+              />
+            </div>
+          </template>
+        </SharedTTable>
       </div>
 
       <div
         v-else-if="viewMode === 'cards' && items.length > 0"
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
       >
-        <div
-          v-for="item in items"
-          :key="item.id"
-          class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow transition-shadow"
-        >
-          <div
-            class="p-4 border-b border-gray-100 flex justify-between items-center"
-          >
-            <h3 class="font-bold text-lg text-blue-800 truncate">
-              {{ item.name }}
-            </h3>
-            <span
-              class="px-2 py-1 rounded-full text-xs font-medium"
-              :class="getStatusClass(item.status)"
-            >
-              {{ item.status }}
-            </span>
-          </div>
-
-          <div class="p-4 space-y-3">
-            <!-- Cliente -->
-            <div class="flex items-start">
-              <Icon name="tabler:user" class="text-gray-500 mt-0.5 mr-2" />
-              <div>
-                <div class="text-xs text-gray-500">Cliente</div>
-                <div class="text-sm">{{ item.client }}</div>
-              </div>
-            </div>
-
-            <!-- Endereço -->
-            <div class="flex items-start">
-              <Icon name="tabler:map-pin" class="text-gray-500 mt-0.5 mr-2" />
-              <div>
-                <div class="text-xs text-gray-500">Local</div>
-                <div class="text-sm">{{ item.address }}</div>
-              </div>
-            </div>
-
-            <!-- Prazo -->
-            <div class="flex items-start">
-              <Icon name="tabler:calendar" class="text-gray-500 mt-0.5 mr-2" />
-              <div>
-                <div class="text-xs text-gray-500">Prazo</div>
-                <div class="text-sm">{{ item.deadline }}</div>
-              </div>
-            </div>
-
-            <!-- Progresso -->
-            <div>
-              <div class="flex justify-between text-xs mb-1">
-                <span class="text-gray-500">Progresso</span>
-                <span class="font-medium">{{ item.progress }}%</span>
-              </div>
-              <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                <div
-                  class="h-full"
-                  :style="{ width: item.progress + '%' }"
-                  :class="getProgressClass(item.progress)"
-                ></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Rodapé do card com botões de ação -->
-          <div class="px-4 py-3 bg-gray-50 flex justify-between">
-            <button
-              class="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-1"
-            >
-              <Icon name="tabler:eye" size="1rem" />
-              <span>Ver detalhes</span>
-            </button>
-            <div class="flex gap-2">
-              <button class="p-1 text-blue-600 hover:text-blue-800">
-                <Icon name="tabler:edit" />
-              </button>
-              <button class="p-1 text-red-600 hover:text-red-800">
-                <Icon name="tabler:trash" />
-              </button>
-            </div>
-          </div>
-        </div>
+        <WorksCardPresentation :items="works" />
       </div>
 
       <!-- Estado vazio -->
@@ -307,6 +268,29 @@
 
 <script setup>
 const http = useApi();
+const router = useRouter();
+
+const works = ref([]);
+const loadingGetWorks = ref(false);
+
+const workStatus = {
+  0: {
+    label: "A Iniciar",
+    color: "bg-blue-100 text-blue-800",
+  },
+  1: {
+    label: "Em Andamento",
+    color: "bg-yellow-100 text-yellow-800",
+  },
+  2: {
+    label: "Pausado",
+    color: "bg-red-100 text-red-800",
+  },
+  3: {
+    label: "Concluído",
+    color: "bg-green-100 text-green-800",
+  },
+};
 
 const columnsTable = [
   {
@@ -345,7 +329,7 @@ const columnsTable = [
     },
   },
   {
-    key: "deadline",
+    key: "endDate",
     label: "Prazo",
     thClass: "w-30",
     tdClass: "",
@@ -504,39 +488,29 @@ const saveNewWork = () => {
   closeNewWorkModal();
 };
 
-// Função auxiliar para classes de status
-const getStatusClass = (status) => {
-  const classes = {
-    "Em andamento": "bg-yellow-100 text-yellow-800",
-    Concluído: "bg-green-100 text-green-800",
-    Planejamento: "bg-blue-100 text-blue-800",
-    Cancelado: "bg-red-100 text-red-800",
-  };
-  return classes[status] || "";
-};
-
-// Função auxiliar para classes de progresso
-const getProgressClass = (progress) => {
-  if (progress >= 100) return "bg-green-500";
-  if (progress >= 75) return "bg-green-400";
-  if (progress >= 50) return "bg-yellow-500";
-  if (progress >= 25) return "bg-yellow-400";
-  return "bg-blue-400";
-};
-
 async function getWorks() {
   try {
+    loadingGetWorks.value = true;
     const { data, error } = await http.get("work/list");
 
     if (error.value) {
       console.error("Erro ao buscar obras:", error.value);
+      loadingGetWorks.value = false;
       return;
     }
 
-    console.log("Obras:", data.value.content);
+    works.value = data.value.content;
+
+    loadingGetWorks.value = false;
   } catch (error) {
     console.error("Erro ao buscar obras:", error);
+    loadingGetWorks.value = false;
   }
+}
+
+function formatDate(dateString) {
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  return new Date(dateString).toLocaleDateString("pt-BR", options);
 }
 
 getWorks();
