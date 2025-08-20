@@ -12,7 +12,7 @@
             >Gerenciamento de obras e projetos</span
           >
         </div>
-        <div class="flex gap-3">
+        <div class="flex gap-3 hidden md:flex">
           <div class="bg-blue-50 rounded-lg p-3 shadow-sm">
             <div class="text-xs text-gray-500 font-medium">Total de obras</div>
             <div class="text-xl font-bold text-blue-700">
@@ -37,29 +37,30 @@
 
     <section class="mb-8 bg-gray-50 p-4 rounded-lg shadow-sm">
       <div class="flex flex-wrap items-center gap-4">
-        <SharedTInput
-          placeholder="Buscar obra..."
-          class="flex-1"
-          icon="tabler:search"
-        />
+        <div class="w-full md:flex-1">
+          <SharedTInput placeholder="Buscar obra..." icon="tabler:search" />
+        </div>
+
         <SharedTSelect
           placeholder="Status"
-          class="w-50"
+          class="flex-1 md:w-50"
           :options="statusOptions"
           v-model="selectedStatus"
         />
         <SharedTSelect
           placeholder="Cliente"
-          class="w-50"
+          class="flex-1 md:w-50"
           :options="clientOptions"
           v-model="selectedClient"
         />
-        <SharedTButton
-          title="Nova Obra"
-          class="w-auto bg-teal-600 hover:bg-teal-700"
-          icon="tabler:plus"
-          @click="openNewWorkModal"
-        />
+        <div class="w-full md:w-auto flex items-enter justify-center">
+          <SharedTButton
+            title="Nova Obra"
+            class="w-auto bg-teal-600 hover:bg-teal-700"
+            icon="tabler:plus"
+            @click="openNewWorkModal"
+          />
+        </div>
       </div>
     </section>
 
@@ -88,13 +89,17 @@
         </div>
       </div>
 
-      <div v-if="viewMode === 'table' && works.length > 0">
+      <div
+        v-if="viewMode === 'table' && works.length > 0"
+        class="overflow-x-auto"
+      >
         <SharedTTable
           :columns="columnsTable"
           :rows="works"
           :loading="loadingGetWorks"
-          class="shadow-sm border border-gray-100 rounded-lg overflow-hidden"
-          hover-effect
+          :hover-effect="true"
+          :max-height="false"
+          class="shadow-sm border border-gray-100 rounded-lg"
         >
           <template #cell-client="{ row }">
             <span class="text-gray-500">{{ row?.client?.name || "N/A" }}</span>
@@ -152,7 +157,7 @@
 
       <!-- Estado vazio -->
       <div
-        v-if="items.length === 0"
+        v-if="works.length === 0"
         class="text-center py-16 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300"
       >
         <Icon
@@ -642,8 +647,9 @@ getClients();
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
-.hover-effect tr:hover td {
-  background-color: rgba(59, 130, 246, 0.05);
+/* Estilos para garantir o correto funcionamento da tabela responsiva */
+.overflow-x-auto {
+  width: 100%;
 }
 
 /* Gradiente para o título */
