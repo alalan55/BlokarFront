@@ -20,7 +20,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-if="loading">
+          <tr v-if="props.loading">
             <td :colspan="columns?.length" class="py-8 text-center">
               <slot name="loading">
                 <span class="flex justify-center items-center gap-2 w-full">
